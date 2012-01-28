@@ -48,7 +48,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		
 		Vector3 spawnPosition = new Vector3(x*spawnRadius, y*spawnRadius, zPosition);
 		
-		Quaternion rotation = Quaternion.AngleAxis(360 - Mathf.Rad2Deg*angle, Vector3.forward);
+		Quaternion rotation = Quaternion.AngleAxis(180 - Mathf.Rad2Deg*angle, Vector3.forward);
 		
 		GameObject newObstacle;
 		newObstacle = Instantiate(staticObstacle, spawnPosition, rotation) as GameObject;
