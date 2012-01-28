@@ -27,16 +27,40 @@ public class CharacterRotation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update ()
-	{
-		float h = Input.GetAxisRaw("Horizontal");
+	{	
+		if (Application.platform == RuntimePlatform.Android) // Android Accelerometer support
+		{			
+			Vector3 aVec = Input.acceleration;
+			
+			// Portrait mode, so axis are flipped
+			float currentXf = aVec.x;  	// store current X
+			aVec.x = -aVec.y;   		// X is now -Y
+			aVec.y = currentXf;        	// Y is original X
+			
+			Vector3 upVec = new Vector3(0, 1.0f, 0);
+			currAngle = Mathf.Acos(Vector3.Dot(aVec, upVec)/(aVec.magnitude*upVec.magnitude));
+			
+			if (aVec.x < 0)
+				currAngle = 2*Mathf.PI - currAngle;
+		}
 		
-		currAngle -= h * Time.deltaTime * rotationSpeed;
-		
-		if(currAngle > 2*Mathf.PI)
-			currAngle -= 2*Mathf.PI;
-		else if(currAngle < 0)
-			currAngle += 2*Mathf.PI;
+		else // PC Mouse support	
+		{
+			float h = Input.GetAxisRaw("Horizontal");
+			
+			currAngle -= h * Time.deltaTime * rotationSpeed;
+			
+			if(currAngle > 2*Mathf.PI)
+				currAngle -= 2*Mathf.PI;
+			else if(currAngle < 0)
+				currAngle += 2*Mathf.PI;
+		}
 		
 		CalcPosition();
+	}
+	
+	void OnGUI()
+	{
+		GUILayout.Label("\nCurrent angle: " + currAngle);
 	}
 }
