@@ -38,8 +38,6 @@ public class TunnelSpawnerScript : MonoBehaviour {
 		newTunnel = Instantiate(tunnelPrefab, position, Quaternion.identity) as GameObject;
 		ObjectCleanUp cleanUp = newTunnel.GetComponent<ObjectCleanUp>();
 		cleanUp.SetCharacter(character);
-		
-		gameObject.GetComponent<ObjectSpawnerScript>().SpawnObjects(position, segmentLength);
 	}
 	
 	public void Reset ()
