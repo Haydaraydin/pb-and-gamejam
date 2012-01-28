@@ -13,6 +13,37 @@ public class TunnelSpawnerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+		Reset();
+	}
+	
+	// Update is called once per frame
+	void Update ()
+	{
+		if(character.position.z > lastSpawnedSegment)
+		{
+			Vector3 spawnPos = new Vector3(
+								character.position.x,
+		                    	character.position.y,
+		                    	lastSpawnedSegment + segmentLength);
+			                               
+			SpawnTunnel(spawnPos);
+			
+			lastSpawnedSegment = spawnPos.z;
+		}
+	}
+	
+	void SpawnTunnel (Vector3 position)
+	{	
+		GameObject newTunnel;
+		newTunnel = Instantiate(tunnelPrefab, position, Quaternion.identity) as GameObject;
+		ObjectCleanUp cleanUp = newTunnel.GetComponent<ObjectCleanUp>();
+		cleanUp.SetCharacter(character);
+		
+		gameObject.GetComponent<ObjectSpawnerScript>().SpawnObjects(position, segmentLength);
+	}
+	
+	public void Reset ()
+	{
 		Vector3 posBack = new Vector3(
 								character.position.x,
 		                    	character.position.y,
@@ -30,30 +61,5 @@ public class TunnelSpawnerScript : MonoBehaviour {
 		SpawnTunnel(posFront);
 		
 		lastSpawnedSegment = posFront.z;
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		if(character.position.z > lastSpawnedSegment)
-		{
-			Vector3 spawnPos = new Vector3(
-								character.position.x,
-		                    	character.position.y,
-		                    	lastSpawnedSegment + segmentLength);
-			                               
-			SpawnTunnel(spawnPos);
-			
-			lastSpawnedSegment = spawnPos.z;
-		}
-			            
-	}
-	
-	void SpawnTunnel (Vector3 position)
-	{	
-		GameObject newTunnel;
-		newTunnel = Instantiate(tunnelPrefab, position, Quaternion.identity) as GameObject;
-		TunnelCleanUp cleanUp = newTunnel.GetComponent<TunnelCleanUp>();
-		cleanUp.SetCharacter(character);
-	}
+	}	
 }
