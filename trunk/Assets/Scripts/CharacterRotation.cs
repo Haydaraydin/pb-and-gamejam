@@ -23,6 +23,8 @@ public class CharacterRotation : MonoBehaviour {
 		float y = Mathf.Cos(currAngle)*offsetRadius;
 		
 		transform.localPosition = new Vector3(x, y, 0);
+		
+		transform.localRotation = Quaternion.AngleAxis(180 - Mathf.Rad2Deg*currAngle, Vector3.forward);
 	}
 	
 	// Update is called once per frame
