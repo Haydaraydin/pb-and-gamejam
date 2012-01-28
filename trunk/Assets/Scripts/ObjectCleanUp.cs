@@ -1,11 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class TunnelCleanUp : MonoBehaviour {
+public class ObjectCleanUp : MonoBehaviour {
 	
 	public float cleanUpDistance = 10.0f;
-	
-	private Transform character;
+	public Transform character;
 	
 	// Use this for initialization
 	void Start () {

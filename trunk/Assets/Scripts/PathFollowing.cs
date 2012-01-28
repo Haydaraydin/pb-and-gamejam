@@ -5,7 +5,10 @@ public class PathFollowing : MonoBehaviour {
 
 	public Vector3 initialPosition;
 	public float moveSpeed = 1.0f;
+	public bool loop = false;
 	public float maxDistance = 5.0f;
+	
+	public GameObject tunnelSpawner;
 	
 	// Use this for initialization
 	void Start () {
@@ -17,10 +20,17 @@ public class PathFollowing : MonoBehaviour {
 		Vector3 newPos = transform.position;
 		newPos += new Vector3(0, 0, moveSpeed*Time.deltaTime);
 		
-		if(newPos.z > maxDistance + initialPosition.z)
-			newPos = initialPosition;
+		if(loop && (newPos.z > maxDistance + initialPosition.z))
+		{
+			transform.position = initialPosition;
+			
+			tunnelSpawner.GetComponent<TunnelSpawnerScript>().Reset();
+		}
+		else
+		{
+			transform.position = newPos;
+		}
 		
-		transform.position = newPos;
 	}
 	
 	void OnGUI()
