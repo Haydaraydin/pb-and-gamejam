@@ -25,11 +25,105 @@ ModelImporter:
     //RootNode:
     - 100000
     - 400000
-    - 3300000
-    - 2300000
     - 11100000
+    Avatar_Tail_Bone07:
+    - 100002
+    - 400002
+    Avatar_Body_CNT:
+    - 100004
+    - 400004
+    Avatar_Mesh:
+    - 100006
+    - 400006
+    - 13700000
+    Avatar_Tail_Bone06:
+    - 100008
+    - 400008
+    Avatar_Tail_Bone05:
+    - 100010
+    - 400010
+    Avatar_Tail_Bone04:
+    - 100012
+    - 400012
+    Avatar_Tail_Bone03:
+    - 100014
+    - 400014
+    Avatar_Tail_Bone02:
+    - 100016
+    - 400016
+    Avatar_Tail_Bone01:
+    - 100018
+    - 400018
+    Avatar_Tail_Bone00:
+    - 100020
+    - 400020
+    Avatar_BL_Foot_Bone03:
+    - 100022
+    - 400022
+    Avatar_BL_Foot_Bone02:
+    - 100024
+    - 400024
+    Avatar_BL_Foot_Bone01:
+    - 100026
+    - 400026
+    Avatar_BL_Foot_Bone00:
+    - 100028
+    - 400028
+    Avatar_BR_Foot_Bone03:
+    - 100030
+    - 400030
+    Avatar_BR_Foot_Bone02:
+    - 100032
+    - 400032
+    Avatar_BR_Foot_Bone01:
+    - 100034
+    - 400034
+    Avatar_BR_Foot_Bone00:
+    - 100036
+    - 400036
+    Avatar_FL_Foot_Bone03:
+    - 100038
+    - 400038
+    Avatar_FL_Foot_Bone02:
+    - 100040
+    - 400040
+    Avatar_FL_Foot_Bone01:
+    - 100042
+    - 400042
+    Avatar_FL_Foot_Bone00:
+    - 100044
+    - 400044
+    Avatar_FR_Foot_Bone03:
+    - 100046
+    - 400046
+    Avatar_FR_Foot_Bone02:
+    - 100048
+    - 400048
+    Avatar_FR_Foot_Bone01:
+    - 100050
+    - 400050
+    Avatar_FR_Foot_Bone00:
+    - 100052
+    - 400052
+    Avatar_Head_Bone01:
+    - 100054
+    - 400054
+    Avatar_Head_Bone00:
+    - 100056
+    - 400056
+    Avatar_Body_Bone01:
+    - 100058
+    - 400058
+    Avatar_Body_Bone00:
+    - 100060
+    - 400060
+    Avatar_Global_Move_CNT:
+    - 100062
+    - 400062
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
     4300000: Sphere001
     4300002: avatar
+    4300004: Avatar_Mesh
+    7400000: Take 001 //// avatar
