@@ -22,4 +22,9 @@ public class PathFollowing : MonoBehaviour {
 		
 		transform.position = newPos;
 	}
+	
+	void OnGUI()
+	{
+		GUILayout.Label("Distance: " + transform.position.z);
+	}
 }
