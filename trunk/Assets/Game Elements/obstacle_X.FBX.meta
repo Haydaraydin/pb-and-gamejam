@@ -1,5 +1,5 @@
 fileFormatVersion: 1
-guid: 6bd78cc8681afe84db844e619f085f5d
+guid: 2ad5c893404b5d24c816e609cea8432f
 ModelImporter:
   importerVersion: 7
   meshes:
@@ -22,14 +22,34 @@ ModelImporter:
     animationWrapMode: 0
     splitAnimations: 1
   nodeInfo:
-    //RootNode:
+    obstacleX_TL:
     - 100000
     - 400000
     - 3300000
     - 2300000
+    obstacleX_BL:
+    - 100002
+    - 400002
+    - 3300002
+    - 2300002
+    //RootNode:
+    - 100004
+    - 400004
     - 11100000
+    obstacleX_TR:
+    - 100006
+    - 400006
+    - 3300004
+    - 2300004
+    obstacleX_BR:
+    - 100008
+    - 400008
+    - 3300006
+    - 2300006
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
-    4300000: Sphere001
-    4300002: avatar
+    4300000: obstacleX_TL
+    4300002: obstacleX_TR
+    4300004: obstacleX_BL
+    4300006: obstacleX_BR
