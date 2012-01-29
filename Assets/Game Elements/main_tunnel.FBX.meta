@@ -25,9 +25,23 @@ ModelImporter:
     //RootNode:
     - 100000
     - 400000
-    - 3300000
-    - 2300000
     - 11100000
+    Tunnel_Bone_03:
+    - 100002
+    - 400002
+    Tunnel_Bone_01:
+    - 100004
+    - 400004
+    - 13700000
+    Tunnel_Bone_02:
+    - 100006
+    - 400006
+    Tunnel_Bone_End:
+    - 100008
+    - 400008
+    main_tunnel_mesh:
+    - 100010
+    - 400010
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
