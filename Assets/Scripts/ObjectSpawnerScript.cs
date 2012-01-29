@@ -28,6 +28,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	{
 		public int objectTypeID;
 		public float distanceToNext = 0.1f;
+		public int numberOfObjects = 1;
 		public bool useSectorOffset = false;
 		public int sectorOffset = 0;
 	}
@@ -99,21 +100,24 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	{
 		private ObjectSpawnerScript ownerScript;
 		private ObjectType objectType;
+		private int numberOfObjectsToSpawn;
 		private bool useObjectSectorOffset = false;
 		private int objectSectorOffset = 0;
 		
-		public SpawnAction(ObjectSpawnerScript owner, ObjectType type, bool useSectorOffset, int sectorOffset)
+		public SpawnAction(ObjectSpawnerScript owner, ObjectType type, 
+		                   int numberOfObjects, bool useSectorOffset, int sectorOffset)
 		{
 			ownerScript = owner;
 			objectType = type;
+			numberOfObjectsToSpawn = numberOfObjects;
 			useObjectSectorOffset = useSectorOffset;
 			objectSectorOffset = sectorOffset;
 		}
 		
 		public override float PerformAction()
 		{
-			ownerScript.SpawnObject(objectType.gameObject, objectType.spawnRadius,
-			                        useObjectSectorOffset, objectSectorOffset);
+			ownerScript.SpawnObjects(objectType.gameObject, objectType.spawnRadius,
+			                        numberOfObjectsToSpawn, useObjectSectorOffset, objectSectorOffset);
 			
 			return objectType.objectLength;
 		}
@@ -165,7 +169,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 						{
 							ObjectType objType = GetObjectFromPatternObject(patObject);
 							
-							SpawnAction spawn = new SpawnAction(this, objType, patObject.useSectorOffset, patObject.sectorOffset);
+							SpawnAction spawn = new SpawnAction(this, objType, patObject.numberOfObjects, patObject.useSectorOffset, patObject.sectorOffset);
 							
 							actionQueue.Enqueue(spawn);
 							
@@ -192,33 +196,63 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		}
 	}
 	
-	void SpawnObject(GameObject obj, float spawnRadius, bool useSectorOffset, int sectorOffset)
+	void SpawnObjects(GameObject obj, float spawnRadius, int numberOfObjects, bool useSectorOffset, int sectorOffset)
 	{
-		int sector = 0;
+		List<int> sectorsUsed = new List<int>();
 		
-		if(useSectorOffset)
+		for(int i = 0; i < numberOfObjects; ++i)
 		{
-			sector = lastSector + sectorOffset;
+			int sector = 0;
+			
+			if(useSectorOffset && i == 0)
+			{
+				sector = lastSector + sectorOffset;
+			}
+			else
+			{
+				// Make sure we don't have more than one sector.
+				bool sectorFound = false;
+				
+				while(!sectorFound)
+				{
+					sector = Random.Range(0, numSectors);
+					
+					bool sectorUsed = false;
+					foreach(int usedSector in sectorsUsed)
+					{
+						if(usedSector == sector)
+						{
+							sectorUsed = true;
+							break;
+						}
+					}
+					
+					if(!sectorUsed)
+					{
+						sectorFound = true;
+					}
+				}
+			}
+			
+			sectorsUsed.Add(sector);
+			
+			float angle = sectorSize*sector;
+			float x = Mathf.Sin(angle);
+			float y = Mathf.Cos(angle);
+			
+			Vector3 spawnPosition = new Vector3(x*spawnRadius, y*spawnRadius, currPosition);
+			
+			Quaternion rotation = Quaternion.AngleAxis(180 - Mathf.Rad2Deg*angle, Vector3.forward);
+			
+			GameObject newObject;
+			newObject = Instantiate(obj, spawnPosition, rotation) as GameObject;
+			
+			ObjectCleanUp cleanUp = newObject.GetComponent<ObjectCleanUp>();
+			
+			cleanUp.SetCharacter(character);
+			
+			lastSector = sector;
 		}
-		else
-		{
-			sector = Random.Range(0, numSectors);
-		}
-		
-		float angle = sectorSize*sector;
-		float x = Mathf.Sin(angle);
-		float y = Mathf.Cos(angle);
-		
-		Vector3 spawnPosition = new Vector3(x*spawnRadius, y*spawnRadius, currPosition);
-		
-		Quaternion rotation = Quaternion.AngleAxis(180 - Mathf.Rad2Deg*angle, Vector3.forward);
-		
-		GameObject newObject;
-		newObject = Instantiate(obj, spawnPosition, rotation) as GameObject;
-		
-		ObjectCleanUp cleanUp = newObject.GetComponent<ObjectCleanUp>();
-		
-		cleanUp.SetCharacter(character);
 	}
 	
 	void VerifyData()
@@ -228,6 +262,11 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		{
 			foreach(PatternObject patternObject in pattern.objects)
 			{
+				if(patternObject.numberOfObjects > numSectors-1)
+				{
+					throw new System.Exception("Too many objects being spawned in: " + patternObject.ToString());
+				}
+				
 				bool objFound = false;
 				foreach(ObjectType obj in objects)
 				{
