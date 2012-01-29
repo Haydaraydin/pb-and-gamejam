@@ -36,7 +36,7 @@ ModelImporter:
     Tunnel_Bone_02:
     - 100006
     - 400006
-    Tunnel_Bone_End:
+    Tunnel_Bone_end:
     - 100008
     - 400008
     main_tunnel_mesh:
