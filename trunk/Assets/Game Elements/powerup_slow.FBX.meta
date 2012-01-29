@@ -1,5 +1,5 @@
 fileFormatVersion: 1
-guid: 480c97cf2df455b47b4db567431ce302
+guid: f1269d588c9f93a4ea47703f5aff4c86
 ModelImporter:
   importerVersion: 7
   meshes:
@@ -22,10 +22,11 @@ ModelImporter:
     animationWrapMode: 0
     splitAnimations: 1
   nodeInfo:
-    Group001:
+    //RootNode:
     - 100000
     - 400000
-    powerup_slow_rings01:
+    - 11100000
+    powerup_slow_rings00:
     - 100002
     - 400002
     - 3300000
@@ -35,41 +36,33 @@ ModelImporter:
     - 400004
     - 3300002
     - 2300002
-    //RootNode:
+    powerup_slow_arrows00:
     - 100006
     - 400006
-    - 11100000
-    powerup_slow_arrows01:
-    - 100008
-    - 400008
     - 3300004
     - 2300004
-    powerup_slow_arrows00:
-    - 100010
-    - 400010
+    powerup_slow_arrows02:
+    - 100008
+    - 400008
     - 3300006
     - 2300006
-    powerup_slow_arrows02:
-    - 100012
-    - 400012
+    powerup_slow_rings01:
+    - 100010
+    - 400010
     - 3300008
     - 2300008
-    powerup_slow_rings00:
-    - 100014
-    - 400014
+    powerup_slow_arrows01:
+    - 100012
+    - 400012
     - 3300010
     - 2300010
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:
-    4300000: powerup_speed
-    4300002: powerup_speed_ring02
-    4300004: powerup_speed_ring01
-    4300006: powerup_speed_ring00
-    4300008: powerup_slow_rings02
-    4300010: powerup_slow_rings00
-    4300012: powerup_slow_rings01
-    4300014: powerup_slow_arrows01
-    4300016: powerup_slow_arrows02
-    4300018: powerup_slow_arrows00
-    7400000: Take 001 //// powerup_speed
+    4300000: powerup_slow_rings02
+    4300002: powerup_slow_rings00
+    4300004: powerup_slow_rings01
+    4300006: powerup_slow_arrows00
+    4300008: powerup_slow_arrows01
+    4300010: powerup_slow_arrows02
+    7400000: Take 001 //// powerup_slow
