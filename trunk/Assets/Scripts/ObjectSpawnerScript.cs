@@ -403,9 +403,4 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		
 		return null;
 	}
-	
-	void OnGUI()
-	{
-		GUILayout.Label("Level: " + (currLevel + 1));
-	}
 }
