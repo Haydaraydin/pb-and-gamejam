@@ -43,6 +43,7 @@ public class CharacterCollision : MonoBehaviour
 	{
 		if (other.gameObject.name.StartsWith("StaticObstacle") || other.gameObject.name.Contains("Slime"))
 		{
+			transform.Find("Particle System").particleEmitter.Emit();
 			audio.Play();
 			isAlive = false;
 		}
