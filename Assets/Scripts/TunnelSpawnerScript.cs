@@ -7,6 +7,7 @@ public class TunnelSpawnerScript : MonoBehaviour {
 	public Transform character;
 	
 	public float segmentLength = 5.0f;
+	public float pathBuffer = 10.0f;
 	
 	private float lastSpawnedSegment;
 	
@@ -19,45 +20,31 @@ public class TunnelSpawnerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if(character.position.z > lastSpawnedSegment)
-		{
-			Vector3 spawnPos = new Vector3(
-								character.position.x,
-		                    	character.position.y,
-		                    	lastSpawnedSegment + segmentLength);
-			                               
-			SpawnTunnel(spawnPos);
-			
-			lastSpawnedSegment = spawnPos.z;
+		PathFollowing pathFollow = character.GetComponent<PathFollowing>();
+		if(pathFollow.GetPathPosition() > lastSpawnedSegment - pathBuffer)
+		{			                               
+			lastSpawnedSegment = SpawnTunnel(lastSpawnedSegment);
 		}
 	}
 	
-	void SpawnTunnel (Vector3 position)
+	float SpawnTunnel (float position)
 	{	
+		PathFollowing pathFollow = character.GetComponent<PathFollowing>();
+		
+		Vector3 point = new Vector3(0,0,0);
+		Vector3 normal = new Vector3(0,0,0);
+		pathFollow.GetPointAndNormalAt(position, ref point, ref normal);
+		
 		GameObject newTunnel;
-		newTunnel = Instantiate(tunnelPrefab, position, Quaternion.identity) as GameObject;
-		ObjectCleanUp cleanUp = newTunnel.GetComponent<ObjectCleanUp>();
-		cleanUp.SetCharacter(character);
+		newTunnel = Instantiate(tunnelPrefab, point, Quaternion.LookRotation(normal)) as GameObject;
+		TunnelRigHandler rigHandler = newTunnel.GetComponent<TunnelRigHandler>();
+		return rigHandler.SetupTunnelRig(character, position);
 	}
 	
 	public void Reset ()
-	{
-		Vector3 posBack = new Vector3(
-								character.position.x,
-		                    	character.position.y,
-		                    	character.position.z - segmentLength);
-		
-		Vector3 posMiddle = character.position;
-		
-		Vector3 posFront = new Vector3(
-								character.position.x,
-		                    	character.position.y,
-		                    	character.position.z + segmentLength);
-		
-		SpawnTunnel(posBack);
-		SpawnTunnel(posMiddle);
-		SpawnTunnel(posFront);
-		
-		lastSpawnedSegment = posFront.z;
+	{	
+		float currPos = SpawnTunnel(-5.0f);
+		currPos = SpawnTunnel(currPos);
+		lastSpawnedSegment = SpawnTunnel(currPos);
 	}	
 }

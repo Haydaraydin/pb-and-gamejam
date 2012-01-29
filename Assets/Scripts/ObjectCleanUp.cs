@@ -5,6 +5,7 @@ public class ObjectCleanUp : MonoBehaviour {
 	
 	public float cleanUpDistance = 10.0f;
 	public Transform character;
+	public float position;
 	
 	// Use this for initialization
 	void Start () {
@@ -13,12 +14,15 @@ public class ObjectCleanUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Mathf.Abs(character.position.z - transform.position.z) > cleanUpDistance)
+		PathFollowing pathFollow = character.GetComponent<PathFollowing>();
+		
+		if(pathFollow.GetPathPosition() > position + cleanUpDistance)
 			Destroy(gameObject);
 	}
 	
-	public void SetCharacter(Transform newCharacter)
+	public void SetupClean(Transform newCharacter, float newPosition)
 	{
 		character = newCharacter;
+		position = newPosition;
 	}
 }
