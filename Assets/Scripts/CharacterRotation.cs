@@ -10,6 +10,7 @@ public class CharacterRotation : MonoBehaviour {
 	private float currAngle = 0.0f;
 	
 	private Vector3 debugCurrentAccel;
+	private Vector3 debugCorrectedAccel;
 	
 	private float angleVelocity = 0.0f;
 	
@@ -45,12 +46,19 @@ public class CharacterRotation : MonoBehaviour {
 			aVec.x = -aVec.y;   		// X is now -Y
 			aVec.y = currentXf;        	// Y is original X
 			
+			// Only use x and y components to minimize the "flat surface case"
+			Vector3 correctedVec = new Vector3(aVec.x, aVec.y, 0.0f);
+			Vector3.Normalize(correctedVec);
+			
+			debugCorrectedAccel = correctedVec; // Debug
+			
 			Vector3 upVec = new Vector3(0, 1.0f, 0);
-			float newAngle = Mathf.Acos(Vector3.Dot(aVec, upVec)/(aVec.magnitude*upVec.magnitude));
+			float newAngle = Mathf.Acos(Vector3.Dot(correctedVec, upVec)/(correctedVec.magnitude*upVec.magnitude));
 			
 			if (aVec.x < 0)
 				newAngle = 2*Mathf.PI - newAngle;
 			
+			// Fallback
 			if (float.IsNaN(currAngle))
 				currAngle = 0.0f;
 			if (float.IsNaN(newAngle))
@@ -77,6 +85,6 @@ public class CharacterRotation : MonoBehaviour {
 	
 	void OnGUI()
 	{
-		GUILayout.Label("\nCurrent angle: " + currAngle + "\nCurrent Accel Vec: " + debugCurrentAccel);
+		GUILayout.Label("\nCurrent angle: " + currAngle + "\nCurrent Accel Vec: " + debugCurrentAccel + "\n\nCorrected Accel Vec: " + debugCorrectedAccel);
 	}
 }

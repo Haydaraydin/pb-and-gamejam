@@ -27,6 +27,10 @@ public class TriggerEntryAnim : MonoBehaviour
 		   && objectToPlayOn != null && objectToPlayOn.animation != null)
 		{
 			objectToPlayOn.animation.Play(entryClip);
+			
+			if (objectToPlayOn.audio != null)
+				objectToPlayOn.audio.Play();
+			
 			played = true;
 		}
 	}
