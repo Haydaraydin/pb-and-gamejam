@@ -56,6 +56,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	public class LevelData
 	{
 		public string description = "";
+		public float startBuffer = 5.0f;
 		public float duration;
 		public float minDistBetweenPatterns;
 		public float maxDistBetweenPatterns;
@@ -67,6 +68,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	
 	private abstract class Action
 	{
+		public abstract float Length();
 		public abstract float PerformAction();
 	}
 	
@@ -79,6 +81,11 @@ public class ObjectSpawnerScript : MonoBehaviour {
 			waitTime = time;
 		}
 		
+		public override float Length()
+		{
+			return waitTime;
+		}
+		
 		public override float PerformAction()
 		{
 			return waitTime;
@@ -87,17 +94,21 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	
 	private class RandomWaitAction : Action
 	{
-		private float minWait, maxWait;
+		private float waitTime;
 		
 		public RandomWaitAction(float min, float max)
 		{
-			minWait = min;
-			maxWait = max;
+			waitTime = Random.Range(min, max);
+		}
+		
+		public override float Length()
+		{
+			return waitTime;
 		}
 		
 		public override float PerformAction()
 		{
-			return Random.Range(minWait, maxWait);
+			return waitTime;
 		}	
 	}
 	
@@ -119,6 +130,11 @@ public class ObjectSpawnerScript : MonoBehaviour {
 			objectSectorOffset = sectorOffset;
 		}
 		
+		public override float Length()
+		{
+			return objectType.objectLength;
+		}
+		
 		public override float PerformAction()
 		{
 			ownerScript.SpawnObjects(objectType.gameObject, objectType.spawnRadius,
@@ -128,7 +144,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		}
 	}
 	
-	private float actionBuffer = 10.0f;
+	private float actionBuffer = 5.0f;
 	Queue<Action> actionQueue;
 	
 	// Use this for initialization
@@ -139,7 +155,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		currLevel = 0;
 		timeInCurrLevel = 0.0f;
 		lastSector = 0;
-		currPosition = character.position.z;
+		currPosition = levels[currLevel].startBuffer;
 		
 		VerifyData();
 		
@@ -150,10 +166,11 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{	
-		PerformActions(character.position.z);
+		PathFollowing pathFollow = character.GetComponent<PathFollowing>();
+		PerformActions(pathFollow.GetPathPosition());
 	}
 	
-	void PerformActions(float yPos)
+	void PerformActions(float nextPos)
 	{
 		LevelData level = levels[currLevel];
 		
@@ -164,9 +181,12 @@ public class ObjectSpawnerScript : MonoBehaviour {
 			timeInCurrLevel -= level.duration;
 			++currLevel;
 			level = levels[currLevel];
+			
+			actionQueue.Clear();
+			currPosition += level.startBuffer;
 		}
 		
-		while(yPos > currPosition - actionBuffer)
+		while(nextPos > currPosition - actionBuffer)
 		{
 			if(actionQueue.Count == 0)
 			{
@@ -205,8 +225,11 @@ public class ObjectSpawnerScript : MonoBehaviour {
 				}
 			}
 			
-			Action next = actionQueue.Dequeue();
+			PathFollowing pathFollow = character.GetComponent<PathFollowing>();
+			if(currPosition + actionQueue.Peek().Length() > pathFollow.GetPathEnd())
+				break;
 			
+			Action next = actionQueue.Dequeue();
 			currPosition += next.PerformAction();
 		}
 	}
@@ -252,19 +275,31 @@ public class ObjectSpawnerScript : MonoBehaviour {
 			sectorsUsed.Add(sector);
 			
 			float angle = sectorSize*sector;
-			float x = Mathf.Sin(angle);
-			float y = Mathf.Cos(angle);
 			
-			Vector3 spawnPosition = new Vector3(x*spawnRadius, y*spawnRadius, currPosition);
+			PathFollowing pathFollow = character.GetComponent<PathFollowing>();
 			
-			Quaternion rotation = Quaternion.AngleAxis(180 - Mathf.Rad2Deg*angle, Vector3.forward);
+			Vector3 point = new Vector3(0,0,0);
+			Vector3 normal = new Vector3(0,0,0);
+			pathFollow.GetPointAndNormalAt(currPosition, ref point, ref normal);
+			
+			Vector3 yUp = new Vector3(0, 1, 0);
+			Vector3 yUpProjected = yUp - Vector3.Project(yUp, normal);
+			yUpProjected.Normalize();
+			
+			Quaternion posRotation = Quaternion.AngleAxis(Mathf.Rad2Deg*angle, normal);
+			
+			Vector3 spawnPosition = posRotation * yUpProjected;
+			spawnPosition *= spawnRadius;
+			spawnPosition += point;
+			
+			Quaternion rotation = Quaternion.LookRotation(normal, point - spawnPosition);
 			
 			GameObject newObject;
 			newObject = Instantiate(obj, spawnPosition, rotation) as GameObject;
 			
 			ObjectCleanUp cleanUp = newObject.GetComponent<ObjectCleanUp>();
 			
-			cleanUp.SetCharacter(character);
+			cleanUp.SetupClean(character, currPosition);
 			
 			lastSector = sector;
 			
@@ -277,6 +312,9 @@ public class ObjectSpawnerScript : MonoBehaviour {
 				
 				int direction = Random.Range(0, 2);
 				obsRot.setClockwiseRotation(direction == 0 ? true : false);
+				
+				obsRot.SetPosition(currPosition);
+				obsRot.SetCharacter(character);
 				if (direction == 1)
 				{
 					foreach (Transform child in newObject.transform)
