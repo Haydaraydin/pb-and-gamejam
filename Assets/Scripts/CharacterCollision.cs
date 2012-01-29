@@ -54,6 +54,6 @@ public class CharacterCollision : MonoBehaviour
 	// GUI
 	void OnGUI()
 	{
-		GUILayout.Label("\n\nIs Alive: " + isAlive);
+		GUILayout.Label("\n\n\nIs Alive: " + isAlive);
 	}
 }
