@@ -38,10 +38,10 @@ public class PathFollowing : MonoBehaviour
 		
 	}
 	
-	void OnGUI()
-	{
-		GUILayout.Label("Distance: " + transform.position.z);
-	}
+//	void OnGUI()
+//	{
+//		GUILayout.Label("Distance: " + transform.position.z);
+//	}
 	
 	public void SetMoveSpeed(float newSpeed)
 	{
