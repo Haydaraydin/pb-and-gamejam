@@ -16,8 +16,9 @@ public class CameraFollow : MonoBehaviour
 	void LateUpdate () 
 	{
 		Vector3 newPos = target.position;
-		newPos -= new Vector3(0, 0, lagDistance);
+		newPos -= target.rotation*(new Vector3(0, 0, lagDistance));
 		
 		transform.position = newPos;
+		transform.rotation = target.rotation;
 	}
 }
