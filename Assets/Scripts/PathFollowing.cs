@@ -13,6 +13,15 @@ public class PathFollowing : MonoBehaviour
 	private float currPathPosition;
 	private float pathEnd;
 	
+	private Vector3 desiredPosition;
+	private Vector3 dampingVelocity;
+	private float smoothTime = 0.3f;
+	
+	private Quaternion prevQuat;
+	private Quaternion nextQuat;
+	private float quatBlendTimer;
+	private float totQuatBlend = 0.3f;
+	
 	public GameObject tunnelSpawner;
 	
 	public class SubSegment
@@ -56,6 +65,10 @@ public class PathFollowing : MonoBehaviour
 		pathEnd = 0.0f;
 		transform.position = initialPosition;
 		moveSpeed = defaultMoveSpeed;
+		
+		prevQuat = Quaternion.identity;
+		nextQuat = Quaternion.identity;
+		quatBlendTimer = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -75,8 +88,28 @@ public class PathFollowing : MonoBehaviour
 		Vector3 normal = new Vector3(0,0,0);
 		GetPointAndNormalAt(currPathPosition, ref point, ref normal);
 		
-		transform.position = point;
-		transform.rotation = Quaternion.LookRotation(normal);
+		desiredPosition = point;
+		
+		transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref dampingVelocity, smoothTime);
+		
+		Quaternion quat = Quaternion.LookRotation(normal);
+		if(nextQuat == Quaternion.identity)
+		{
+			prevQuat = quat;
+			nextQuat = quat;
+			transform.rotation = quat;
+		}
+		else if(quat != nextQuat)
+		{
+			nextQuat = quat;
+			prevQuat = transform.rotation;
+			quatBlendTimer = totQuatBlend;
+		}
+		else if(quatBlendTimer > 0.0f)
+		{
+			transform.rotation = Quaternion.Slerp(nextQuat, prevQuat, quatBlendTimer/totQuatBlend);
+			quatBlendTimer -= Time.deltaTime;
+		}
 //		}
 		
 	}
