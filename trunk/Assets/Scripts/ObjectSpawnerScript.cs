@@ -315,7 +315,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 				
 				obsRot.SetPosition(currPosition);
 				obsRot.SetCharacter(character);
-				if (direction == 1)
+				if (direction == 0)
 				{
 					foreach (Transform child in newObject.transform)
 					{

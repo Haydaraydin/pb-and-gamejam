@@ -9,9 +9,6 @@ public class CharacterRotation : MonoBehaviour {
 	
 	private float currAngle = 0.0f;
 	
-	private Vector3 debugCurrentAccel;
-	private Vector3 debugCorrectedAccel;
-	
 	private float angleVelocity = 0.0f;
 	
 	// Use this for initialization
@@ -39,8 +36,6 @@ public class CharacterRotation : MonoBehaviour {
 		{			
 			Vector3 aVec = Input.acceleration;
 			
-			debugCurrentAccel = aVec; // Debug
-			
 			// Portrait mode, so axis are flipped
 			float currentXf = aVec.x;  	// store current X
 			aVec.x = -aVec.y;   		// X is now -Y
@@ -49,8 +44,6 @@ public class CharacterRotation : MonoBehaviour {
 			// Only use x and y components to minimize the "flat surface case"
 			Vector3 correctedVec = new Vector3(aVec.x, aVec.y, 0.0f);
 			Vector3.Normalize(correctedVec);
-			
-			debugCorrectedAccel = correctedVec; // Debug
 			
 			Vector3 upVec = new Vector3(0, 1.0f, 0);
 			float newAngle = Mathf.Acos(Vector3.Dot(correctedVec, upVec)/(correctedVec.magnitude*upVec.magnitude));
@@ -81,10 +74,5 @@ public class CharacterRotation : MonoBehaviour {
 		}
 		
 		CalcPosition();
-	}
-	
-	void OnGUI()
-	{
-		GUILayout.Label("\nCurrent angle: " + currAngle + "\nCurrent Accel Vec: " + debugCurrentAccel + "\n\nCorrected Accel Vec: " + debugCorrectedAccel);
 	}
 }
