@@ -11,6 +11,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	private int lastSector;
 	private float currPosition;
 	private int currLevel;
+	private float timeInCurrLevel;
 	
 	[System.Serializable]
 	public class ObjectType
@@ -52,6 +53,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	[System.Serializable]
 	public class LevelData
 	{
+		public float duration;
 		public float minDistBetweenPatterns;
 		public float maxDistBetweenPatterns;
 		public LevelPatternData[] patterns;
@@ -132,6 +134,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		sectorSize = 2*Mathf.PI / numSectors;
 		
 		currLevel = 0;
+		timeInCurrLevel = 0.0f;
 		lastSector = 0;
 		currPosition = character.position.z;
 		
@@ -149,13 +152,22 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	
 	void PerformActions(float yPos)
 	{
+		LevelData level = levels[currLevel];
+		
+		timeInCurrLevel += Time.deltaTime;
+		
+		if(timeInCurrLevel >= level.duration && currLevel < levels.Length-1)
+		{
+			timeInCurrLevel -= level.duration;
+			++currLevel;
+			level = levels[currLevel];
+		}
+		
 		while(yPos > currPosition - actionBuffer)
 		{
 			if(actionQueue.Count == 0)
 			{
 				//Add Pattern
-				LevelData level = levels[currLevel];
-				
 				float rand = Random.value;
 				float prob = rand*level.totalProbability;
 				
@@ -331,5 +343,10 @@ public class ObjectSpawnerScript : MonoBehaviour {
 		}
 		
 		return null;
+	}
+	
+	void OnGUI()
+	{
+		GUILayout.Label("Level: " + (currLevel + 1));
 	}
 }
