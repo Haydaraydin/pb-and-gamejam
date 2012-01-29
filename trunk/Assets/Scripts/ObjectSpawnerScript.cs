@@ -152,7 +152,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	{
 		sectorSize = 2*Mathf.PI / numSectors;
 		
-		currLevel = 0;
+		currLevel = StaticGameProperties.GetInstance().GetLevelToStartAt();
 		timeInCurrLevel = 0.0f;
 		lastSector = 0;
 		currPosition = levels[currLevel].startBuffer;
