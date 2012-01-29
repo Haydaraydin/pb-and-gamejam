@@ -7,6 +7,7 @@ public class CharacterCollision : MonoBehaviour
 	private PathFollowing pathScript;
 	
 	private bool isAlive = true;
+	private int numberOfCheese = 0;
 
 	// Use this for initialization
 	void Start () 
@@ -39,7 +40,12 @@ public class CharacterCollision : MonoBehaviour
 		{
 			SpeedPowerUpProperties properties = other.gameObject.GetComponent<SpeedPowerUpProperties>();
 			CollectSpeedPowerup(properties.moveSpeedValue, properties.duration);
-			properties.DestroyOnNextUpdate();
+			Destroy(other.gameObject);
+		}
+		else if (other.gameObject.name.Contains("Cheese"))
+		{
+			numberOfCheese++;
+			Destroy(other.gameObject);
 		}
 	}
 	
@@ -54,6 +60,6 @@ public class CharacterCollision : MonoBehaviour
 	// GUI
 	void OnGUI()
 	{
-		GUILayout.Label("\n\n\nIs Alive: " + isAlive);
+		GUILayout.Label("\n\n\nIs Alive: " + isAlive + " | Number of cheese: " + numberOfCheese);
 	}
 }
