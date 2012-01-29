@@ -1,0 +1,55 @@
+fileFormatVersion: 1
+guid: e2e0b0a725a251c4ba32d4dde01606c7
+ModelImporter:
+  importerVersion: 7
+  meshes:
+    scaleFactor: 0.01
+    useFileUnits: 1
+    meshCompression: 0
+    generateColliders: 0
+    swapUVs: 0
+  tangentSpace:
+    normalImportMode: 0
+    tangentImportMode: 1
+    smoothingAngle: 60
+    splitTangents: 1
+  materials:
+    generation: 1
+  animations:
+    generation: 3
+    bakeAnimations: 0
+    animationCompression: 1
+    animationWrapMode: 0
+    splitAnimations: 1
+  nodeInfo:
+    Slime_B_Bone02:
+    - 100000
+    - 400000
+    Slime:
+    - 100002
+    - 400002
+    - 13700000
+    Slime_F_Bone01:
+    - 100004
+    - 400004
+    Slime_B_Bone00:
+    - 100006
+    - 400006
+    Slime_F_Bone00:
+    - 100008
+    - 400008
+    Slime_F_Bone02:
+    - 100010
+    - 400010
+    Slime_B_Bone01:
+    - 100012
+    - 400012
+    //RootNode:
+    - 100014
+    - 400014
+    - 11100000
+AssetImporter:
+  importerVersion: 1
+  fileIDToRecycleName:
+    4300000: Slime
+    7400000: Take 001 //// obstacle_slime
