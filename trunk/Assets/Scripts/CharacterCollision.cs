@@ -32,7 +32,7 @@ public class CharacterCollision : MonoBehaviour
 	// Fixed update
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.name.StartsWith("StaticObstacle"))
+		if (other.gameObject.name.StartsWith("StaticObstacle") || other.gameObject.name.Contains("Slime"))
 		{
 			isAlive = false;
 		}

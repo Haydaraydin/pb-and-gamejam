@@ -16,6 +16,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	[System.Serializable]
 	public class ObjectType
 	{
+		public string description = "";
 		public int typeID;
 		public GameObject gameObject;
 		public float objectLength = 0.1f;
