@@ -92,7 +92,8 @@ public class PathFollowing : MonoBehaviour
 		
 		transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref dampingVelocity, smoothTime);
 		
-		Quaternion quat = Quaternion.LookRotation(normal);
+		Vector3 up = transform.rotation*(new Vector3(0,1,0));
+		Quaternion quat = Quaternion.LookRotation(normal,up);
 		if(nextQuat == Quaternion.identity)
 		{
 			prevQuat = quat;
