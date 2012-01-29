@@ -7,7 +7,11 @@ public class CharacterRotation : MonoBehaviour {
 	public float initialAngle;
 	public float rotationSpeed = 2.0f;
 	
-	private float currAngle;
+	private float currAngle = 0.0f;
+	
+	private Vector3 debugCurrentAccel;
+	
+	private float angleVelocity = 0.0f;
 	
 	// Use this for initialization
 	void Start ()
@@ -34,16 +38,26 @@ public class CharacterRotation : MonoBehaviour {
 		{			
 			Vector3 aVec = Input.acceleration;
 			
+			debugCurrentAccel = aVec; // Debug
+			
 			// Portrait mode, so axis are flipped
 			float currentXf = aVec.x;  	// store current X
 			aVec.x = -aVec.y;   		// X is now -Y
 			aVec.y = currentXf;        	// Y is original X
 			
 			Vector3 upVec = new Vector3(0, 1.0f, 0);
-			currAngle = Mathf.Acos(Vector3.Dot(aVec, upVec)/(aVec.magnitude*upVec.magnitude));
+			float newAngle = Mathf.Acos(Vector3.Dot(aVec, upVec)/(aVec.magnitude*upVec.magnitude));
 			
 			if (aVec.x < 0)
-				currAngle = 2*Mathf.PI - currAngle;
+				newAngle = 2*Mathf.PI - newAngle;
+			
+			if (float.IsNaN(currAngle))
+				currAngle = 0.0f;
+			if (float.IsNaN(newAngle))
+				newAngle = 0.0f;
+			
+			// Angle dampening
+			currAngle = Mathf.SmoothDampAngle(currAngle*Mathf.Rad2Deg, newAngle*Mathf.Rad2Deg, ref angleVelocity, 0.15f) * Mathf.Deg2Rad;
 		}
 		
 		else // PC Mouse support	
@@ -63,6 +77,6 @@ public class CharacterRotation : MonoBehaviour {
 	
 	void OnGUI()
 	{
-		GUILayout.Label("\nCurrent angle: " + currAngle);
+		GUILayout.Label("\nCurrent angle: " + currAngle + "\nCurrent Accel Vec: " + debugCurrentAccel);
 	}
 }
