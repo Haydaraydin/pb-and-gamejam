@@ -83,7 +83,7 @@ public class PathFollowing : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUILayout.Label("\n\n\n\n\n\nCurrent Position: " + transform.position);
+		//GUILayout.Label("\n\n\n\n\n\nCurrent Position: " + transform.position);
 	}
 	
 	public void SetMoveSpeed(float newSpeed)

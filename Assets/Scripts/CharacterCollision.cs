@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class CharacterCollision : MonoBehaviour 
 {
@@ -45,7 +46,7 @@ public class CharacterCollision : MonoBehaviour
 			audio.Play();
 			isAlive = false;
 		}
-		else if (other.gameObject.name.StartsWith("SpeedPowerUp"))
+		else if (other.gameObject.name.StartsWith("PowerUp"))
 		{
 			SpeedPowerUpProperties properties = other.gameObject.GetComponent<SpeedPowerUpProperties>();
 			CollectSpeedPowerup(properties.moveSpeedValue, properties.duration);
@@ -71,7 +72,9 @@ public class CharacterCollision : MonoBehaviour
 	// GUI
 	void OnGUI()
 	{
-		GUILayout.Label("\n\n\nIs Alive: " + isAlive + " | Number of cheese: " + numberOfCheese);
+		DateTime date = new DateTime((long)(Time.timeSinceLevelLoad * System.TimeSpan.TicksPerSecond));
+		
+		GUILayout.Label("\nTime: " + String.Format("{0:HH:mm:ss}", date) + "\nCheese collected: " + numberOfCheese);
 		
 		if (!isAlive && Time.timeScale == 0.0f)
 		{
