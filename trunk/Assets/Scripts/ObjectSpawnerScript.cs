@@ -38,6 +38,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	public class PatternData
 	{
 		public int typeID;
+		public string description = "";
 		public PatternObject[] objects;
 	}
 	
@@ -53,6 +54,7 @@ public class ObjectSpawnerScript : MonoBehaviour {
 	[System.Serializable]
 	public class LevelData
 	{
+		public string description = "";
 		public float duration;
 		public float minDistBetweenPatterns;
 		public float maxDistBetweenPatterns;
