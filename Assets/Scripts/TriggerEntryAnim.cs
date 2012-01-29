@@ -23,7 +23,7 @@ public class TriggerEntryAnim : MonoBehaviour
 	{
 		Vector3 camPos = mainCam.transform.position;
 		
-		if(Mathf.Abs(camPos.z - transform.position.z) < distanceFromCamera && !played 
+		if(Vector3.Distance(camPos, transform.position) < distanceFromCamera && !played 
 		   && objectToPlayOn != null && objectToPlayOn.animation != null)
 		{
 			objectToPlayOn.animation.Play(entryClip);
