@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\CharacterRotation.cs" />
      <Compile Include="Assets\Scripts\ObjectCleanUp.cs" />
      <Compile Include="Assets\Scripts\ObjectSpawnerScript.cs" />
+     <Compile Include="Assets\Scripts\ObstacleRotation.cs" />
      <Compile Include="Assets\Scripts\PathFollowing.cs" />
      <Compile Include="Assets\Scripts\SpeedPowerUpProperties.cs" />
      <Compile Include="Assets\Scripts\TriggerEntryAnim.cs" />

@@ -266,6 +266,24 @@ public class ObjectSpawnerScript : MonoBehaviour {
 			cleanUp.SetCharacter(character);
 			
 			lastSector = sector;
+			
+			// Save the initial angle for moving obstacles
+			ObstacleRotation obsRot = newObject.GetComponent<ObstacleRotation>();
+			if (obsRot != null)
+			{
+				obsRot.setCurrentAngle(angle);
+				obsRot.setSpawnRadius(spawnRadius);
+				
+				int direction = Random.Range(0, 2);
+				obsRot.setClockwiseRotation(direction == 0 ? true : false);
+				if (direction == 1)
+				{
+					foreach (Transform child in newObject.transform)
+					{
+					    child.transform.RotateAroundLocal(Vector3.up, 180);
+					}
+				}
+			}
 		}
 	}
 	
